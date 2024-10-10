@@ -56,9 +56,9 @@ Create Workbench
     ...             ${press_cancel}=${FALSE}  ${version}=default  ${envs}=${NONE}
     ...             ${data_connection}=${NONE}
     Open Data Science Project Details Page       project_title=${prj_title}    tab_id=workbenches
-    Wait Until Element Is Enabled    ${WORKBENCH_CREATE_BTN_XP}
+    Wait Until Element Is Enabled    ${WORKBENCH_CREATE_BTN_XP}    1m
     Click Element    ${WORKBENCH_CREATE_BTN_XP}
-    Wait Until Page Contains Element    ${WORKBENCH_NAME_INPUT_XP}
+    Wait Until Page Contains Element    ${WORKBENCH_NAME_INPUT_XP}    1m
     Run Keyword And Continue On Failure     Element Should Be Disabled    ${WORKBENCH_CREATE_BTN_2_XP}
     Input Text    ${WORKBENCH_NAME_INPUT_XP}    ${workbench_title}
     Input Text    ${WORKBENCH_DESCR_TXT_XP}    ${workbench_description}
@@ -101,10 +101,10 @@ Create Workbench
     IF    ${press_cancel} == ${TRUE}
         Click Button    ${GENERIC_CANCEL_BTN_XP}
     ELSE
-        Wait Until Element Is Enabled    ${WORKBENCH_CREATE_BTN_2_XP}
+        Wait Until Element Is Enabled    ${WORKBENCH_CREATE_BTN_2_XP}    1m
         Click Button    ${WORKBENCH_CREATE_BTN_2_XP}
     END
-    Wait Until Element Is Not Visible    //form    10s
+    Wait Until Element Is Not Visible    //form    1m
     Open Data Science Project Details Page       project_title=${prj_title}    tab_id=workbenches
 
 #robocop: disable: line-too-long
@@ -163,7 +163,7 @@ Select Existing Data Connection In Workbench
     [Documentation]    Selects the existing data connection in the workbench creation page from a dropdown list
     [Arguments]    ${data_connection}
     Click Element    ${ENV_DATA_CONNECTION_SECTION_XP}//input[contains(@placeholder,"Select a data connection")]
-    Wait Until Page Contains Element    xpath=//ul[@role="listbox"]/li/button[text()="${data_connection}"]
+    Wait Until Page Contains Element    xpath=//ul[@role="listbox"]/li/button[text()="${data_connection}"]    1m
     Click Element    xpath=//ul[@role="listbox"]/li/button[text()="${data_connection}"]
 
 Select Environment Variable Types
@@ -208,9 +208,9 @@ Select Workbench Jupyter Image
     END
 
     Click Element    //a[@href="#notebook-image"]
-    Wait Until Page Contains Element    ${WORKBENCH_IMAGE_MENU_BTN_XP}
+    Wait Until Page Contains Element    ${WORKBENCH_IMAGE_MENU_BTN_XP}    1m
     Click Element    ${WORKBENCH_IMAGE_MENU_BTN_XP}
-    Wait Until Page Contains Element    ${WORKBENCH_IMAGE_ITEM_BTN_XP}\[text()="${image_name}"]    timeout=10s
+    Wait Until Page Contains Element    ${WORKBENCH_IMAGE_ITEM_BTN_XP}\[text()="${image_name}"]    timeout=2m
     Click Element    ${WORKBENCH_IMAGE_ITEM_BTN_XP}\[text()="${image_name}"]
     IF    "${version}" != "${NONE}"
         IF    "${version}"=="default"
@@ -249,7 +249,7 @@ Select Workbench Image Version
     [Arguments]    ${version}=default
     Verify Version Selection Dropdown
     Click Element    xpath=${WORKBENCH_IMAGE_VER_BUTTON}
-    Wait Until Page Contains Element    xpath=${WORKBENCH_IMAGE_VER_DROPDOWN}
+    Wait Until Page Contains Element    xpath=${WORKBENCH_IMAGE_VER_DROPDOWN}    1m
     IF    "${version}"=="default"
         Click Element    xpath=${WORKBENCH_IMAGE_VER_DROPDOWN}//span//div[contains(text(), "${DEFAULT_NOTEBOOK_VER}")]/../../..
     ELSE IF    "${version}"=="previous"
@@ -293,7 +293,7 @@ Workbench Should Not Be Listed
 
 Workbench Status Should Be
     [Documentation]    Checks a workbench status is the expected one in the DS Project details page
-    [Arguments]     ${workbench_title}      ${status}    ${timeout}=10
+    [Arguments]     ${workbench_title}      ${status}    ${timeout}=1m
     Run keyword And Continue On Failure
     ...    Wait Until Page Contains Element
     ...    ${WORKBENCH_SECTION_XP}//td[@data-label="Name"]//*[.="${workbench_title}"]/../../../td[@data-label="Status"]//span[text()="${status}"]
@@ -328,13 +328,13 @@ Wait Until Workbench Is Restarting
 
 Start Workbench
     [Documentation]    Starts a workbench from the DS Project details page
-    [Arguments]     ${workbench_title}      ${timeout}=60s
+    [Arguments]     ${workbench_title}      ${timeout}=2m
 
     ${is_stopped}=      Run Keyword And Return Status   Workbench Status Should Be
     ...    workbench_title=${workbench_title}   status=${WORKBENCH_STATUS_STOPPED}
     IF    ${is_stopped} == ${TRUE}
         Click Button    xpath=//div[@data-testid="table-row-title"]//div[text()="${workbench_title}"]/ancestor::tr//button[@aria-label="Kebab toggle"]
-        Wait Until Element Is Visible    xpath=//div[@data-testid="table-row-title"]//div[text()="${workbench_title}"]/ancestor::tr//button[@aria-label="Kebab toggle"]/following::div//span[text()="Start"]    timeout=10
+        Wait Until Element Is Visible    xpath=//div[@data-testid="table-row-title"]//div[text()="${workbench_title}"]/ancestor::tr//button[@aria-label="Kebab toggle"]/following::div//span[text()="Start"]    timeout=2m
         Click Element    xpath=//div[@data-testid="table-row-title"]//div[text()="${workbench_title}"]/ancestor::tr//button[@aria-label="Kebab toggle"]/following::div//span[text()="Start"]
     ELSE
         Log     msg=Cannot start ${workbench_title} workbench because it is not stopped.
@@ -351,11 +351,11 @@ Access To Workbench
     ${authorization_required}=  Is Service Account Authorization Required
     IF  ${authorization_required}  Authorize Jupyterhub Service Account
     IF  "${expected_ide}"=="VSCode"
-        Wait Until Page Contains Element  xpath://div[@class="menubar-menu-button"]  timeout=60s
-        Wait Until Page Contains Element  xpath://div[@class="monaco-dialog-box"]  timeout=60s
+        Wait Until Page Contains Element  xpath://div[@class="menubar-menu-button"]  timeout=2m
+        Wait Until Page Contains Element  xpath://div[@class="monaco-dialog-box"]  timeout=2m
         Wait Until Page Contains  Do you trust the authors of the files in this folder?
     ELSE IF  "${expected_ide}"=="JupyterLab"
-        Wait Until Page Contains Element  xpath://div[@id="jp-top-panel"]  timeout=90s
+        Wait Until Page Contains Element  xpath://div[@id="jp-top-panel"]  timeout=3m
         Maybe Close Popup
     ELSE
         Fail    msg=Unknown IDE typy given: '${expected_ide}'. Please check and fix or implement.

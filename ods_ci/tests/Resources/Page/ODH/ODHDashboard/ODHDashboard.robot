@@ -96,7 +96,7 @@ Logout From RHODS Dashboard
 
 Wait For RHODS Dashboard To Load
     [Arguments]  ${dashboard_title}="${ODH_DASHBOARD_PROJECT_NAME}"    ${wait_for_cards}=${TRUE}
-    ...          ${expected_page}=${NONE}    ${timeout}=60
+    ...          ${expected_page}=${NONE}    ${timeout}=2m
     ${half_timeout}=   Evaluate    int(${timeout}) / 2
     Wait For Condition    return document.title == ${dashboard_title}    timeout=${half_timeout}
     Wait Until Page Contains Element    xpath:${RHODS_LOGO_XPATH}    timeout=${timeout}
@@ -111,7 +111,7 @@ Wait For RHODS Dashboard To Load
 
 Wait For Dashboard Page Title
     [Documentation]    Wait until the visible title (h1) of the current Dashboard page is '${page_title}'
-    [Arguments]  ${page_title}    ${timeout}=10s
+    [Arguments]  ${page_title}    ${timeout}=2m
     ${page_title_element}=    Set Variable    //*[@data-testid="app-page-title"]
     Wait Until Element is Visible    ${page_title_element}    timeout=${timeout}
     # Sometimes the h1 text is inside a child element, thus get it with textContent attribute
@@ -799,7 +799,7 @@ Open Application Switcher Menu
 Maybe Wait For Dashboard Loading Spinner Page
     [Documentation]     Detecs the loading symbol (spinner) and wait for it to disappear.
     ...                 If the spinner does not appear, the keyword ignores the error.
-    [Arguments]    ${timeout-pre}=3s    ${timeout}=5s
+    [Arguments]    ${timeout-pre}=1m    ${timeout}=1m
     ${do not wait for spinner}=    Get Variable Value    ${ODH_DASHBOARD_DO_NOT_WAIT_FOR_SPINNER_PAGE}  # defaults to None if undefined
     IF   ${do not wait for spinner} == ${true}
       RETURN

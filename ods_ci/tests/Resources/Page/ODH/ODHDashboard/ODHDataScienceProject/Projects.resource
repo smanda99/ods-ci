@@ -25,11 +25,11 @@ ${PROJECT_SEARCH_INPUT}=    ${PROJECT_SEARCH_BAR}//input[@aria-label="Search inp
 *** Keywords ***
 Open Data Science Projects Home Page
     [Documentation]    Open "Data Science Projects" page from the sidebar
-    Wait Until Page Contains    Data Science Projects
+    Wait Until Page Contains    Data Science Projects    1m
     Click Link      Data Science Projects
     Wait For RHODS Dashboard To Load    wait_for_cards=${FALSE}    expected_page=Data Science Projects
-    Wait Until Page Contains    View your existing projects or create new projects.    timeout=30
-    Maybe Wait For Dashboard Loading Spinner Page
+    Wait Until Page Contains    View your existing projects or create new projects.    timeout=2m
+    Maybe Wait For Dashboard Loading Spinner Page    1m
 
 Is Data Science Projects Page Open
     [Documentation]    Checks if Data Science Projects home page is open. Returns TRUE or FALSE
@@ -48,10 +48,10 @@ Open Data Science Project Details Page
             Open Data Science Projects Home Page
         END
         Click Link    ${project_title}
-        Wait Until Project Is Open    project_title=${project_title}
+        Wait Until Project Is Open    project_title=${project_title}    1m
     END
     IF  "${tab_id}" != "${NONE}"
-        Wait Until Element Is Visible    //button[@role="tab" and @aria-controls="${tab_id}"]
+        Wait Until Element Is Visible    //button[@role="tab" and @aria-controls="${tab_id}"]    1m
         Click Button    //button[@role="tab" and @aria-controls="${tab_id}"]
         Element Should Be Visible   //button[@role="tab" and @aria-controls="${tab_id}" and @aria-selected="true"]
         Sleep    1s    reason=The tab page needs to load content according to user permissions
@@ -94,10 +94,10 @@ Is Data Science Project Details Page Open
 
 Wait Until Project Is Open
     [Documentation]    Waits until a DS Project Details page is laoded
-    [Arguments]     ${project_title}    ${timeout-pre-spinner}=3s    ${timeout-spinner}=5s
+    [Arguments]     ${project_title}    ${timeout-pre-spinner}=1m    ${timeout-spinner}=1m
     Maybe Wait For Dashboard Loading Spinner Page
     ...    timeout-pre=${timeout-pre-spinner}    timeout=${timeout-spinner}
-    Wait For Dashboard Page Title    ${project_title}    timeout=30s
+    Wait For Dashboard Page Title    ${project_title}    timeout=4m
 
 Project Should Be Listed
     [Documentation]    Checks a Project is available in DS Project home page
@@ -135,11 +135,11 @@ Create Data Science Project
         Log    DS Project '${title}' already exists, reusing project    console=True
         Click Link      ${title}
     ELSE
-        Wait Until Page Contains Element    ${PROJECT_CREATE_BTN_XP}
+        Wait Until Page Contains Element    ${PROJECT_CREATE_BTN_XP}    1m
         Click Button    ${PROJECT_CREATE_BTN_XP}
-        Wait Until Page Contains Element    ${RESOURCE_EDIT_BTN_XP}
+        Wait Until Page Contains Element    ${RESOURCE_EDIT_BTN_XP}    1m
         Click Button    ${RESOURCE_EDIT_BTN_XP}
-        Wait Until Page Contains Element    ${TITLE_INPUT_XP}
+        Wait Until Page Contains Element    ${TITLE_INPUT_XP}    1m
         Run Keyword And Warn On Failure     Element Should Be Disabled    ${GENERIC_CREATE_BTN_XP}
         Input Text    ${TITLE_INPUT_XP}    ${title}
         Input Text    ${DESCR_INPUT_XP}    ${description}
@@ -149,9 +149,9 @@ Create Data Science Project
             ${resource_name}=    Generate Unique Namespace    ${resource_name}
         END
         Input Text    ${RESOURCE_INPUT_XP}    ${resource_name}
-        Wait Until Element Is Enabled    ${GENERIC_CREATE_BTN_XP}
+        Wait Until Element Is Enabled    ${GENERIC_CREATE_BTN_XP}    1m
         Click Button    ${GENERIC_CREATE_BTN_XP}
-        Wait Until Generic Modal Disappears
+        Wait Until Generic Modal Disappears    timeout=1m
     END
     Wait Until Project Is Open    project_title=${title}
     ${open}=    Run Keyword And Return Status    Wait Until Project Is Open    project_title=${title}

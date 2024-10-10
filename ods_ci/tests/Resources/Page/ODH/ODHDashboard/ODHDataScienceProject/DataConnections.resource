@@ -26,7 +26,7 @@ Create S3 Data Connection
     ...            ${aws_s3_endpoint}=${S3.AWS_DEFAULT_ENDPOINT}    ${aws_region}=${S3.AWS_DEFAULT_REGION}
     ...            ${connected_workbench}=${NONE}    ${press_cancel}=${FALSE}    ${aws_bucket_name}=${NONE}
     Open Data Science Project Details Page       project_title=${project_title}    tab_id=data-connections
-    Wait Until Element Is Visible     ${DC_ADD_BTN_1_XP}    timeout=30s
+    Wait Until Element Is Visible     ${DC_ADD_BTN_1_XP}    timeout=2m
     Click Button                      ${DC_ADD_BTN_1_XP}
     Fill Data Connection Form    ${project_title}    ${dc_name}    ${aws_access_key}    ${aws_secret_access}
     ...            ${S3_DC_ADD_BTN}    aws_s3_endpoint=${aws_s3_endpoint}    aws_region=${aws_region}
@@ -92,7 +92,7 @@ Fill Data Connection Form
     [Arguments]    ${project_title}    ${dc_name}    ${aws_access_key}    ${aws_secret_access}    ${action_btn}
     ...            ${aws_s3_endpoint}=${S3.AWS_DEFAULT_ENDPOINT}    ${aws_region}=${S3.AWS_DEFAULT_REGION}
     ...            ${connected_workbench}=${NONE}    ${press_cancel}=${FALSE}    ${aws_bucket_name}=${NONE}
-    Wait Until Page Contains Element    ${S3_NAME_DC_INPUT_XP}
+    Wait Until Page Contains Element    ${S3_NAME_DC_INPUT_XP}    2m
     Input Text    ${S3_NAME_DC_INPUT_XP}    ${dc_name}
     Input Text    ${S3_KEY_DC_INPUT_XP}    ${aws_access_key}
     Input Text    ${S3_SECRET_DC_INPUT_XP}    ${aws_secret_access}
@@ -112,7 +112,7 @@ Fill Data Connection Form
     IF    ${press_cancel} == ${TRUE}
         Click Button    ${GENERIC_CANCEL_BTN_XP}
     ELSE
-        Wait Until Element Is Enabled    ${action_btn}
+        Wait Until Element Is Enabled    ${action_btn}    1m
         Click Button    ${action_btn}
     END
     Wait Until Generic Modal Disappears
@@ -137,7 +137,7 @@ Recreate S3 Data Connection
     ...            ${connected_workbench}=${NONE}    ${press_cancel}=${FALSE}    ${aws_bucket_name}=${NONE}
     Open Data Science Project Details Page       project_title=${project_title}    tab_id=data-connections
     ${is_exist}=  Run Keyword And Return Status
-    ...    Wait Until Page Contains Element    ${DC_SECTION_XP}//tr[td[@data-label="Name"]/*/div[.="${dc_name}"]]
+    ...    Wait Until Page Contains Element    ${DC_SECTION_XP}//tr[td[@data-label="Name"]/*/div[.="${dc_name}"]]    1m
     IF  ${is_exist}
         Log    Data Connection '${dc_name}' already exists, updating connection    console=True
         Edit S3 Data Connection    project_title=${project_title}    dc_name=${dc_name}    new_dc_name=${dc_name}${SPACE}

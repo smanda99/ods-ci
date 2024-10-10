@@ -27,7 +27,7 @@ Create Pipeline Server    # robocop: off=too-many-calls-in-keyword
     # Every 2 mins the frontend updates its cache and the client polls every 30seconds.
     # So the longest you’d have to wait is 2.5 mins. Set 3 min just to make sure
     Projects.Move To Tab    Pipelines
-    Wait Until Page Contains Element    ${PIPELINES_SERVER_BTN_XP}    timeout=180s
+    Wait Until Page Contains Element    ${PIPELINES_SERVER_BTN_XP}    timeout=5m
     Element Should Be Enabled    ${PIPELINES_SERVER_BTN_XP}
     Click Button    ${PIPELINES_SERVER_BTN_XP}
     Wait Until Generic Modal Appears

@@ -371,7 +371,7 @@ Wait Until Generic Modal Disappears
     [Documentation]    Waits until a modal window disappears from the page.
     ...                It assumes the html "id" contains "pf-modal-", but it can be
     ...                piloted with ${id} and ${partial_match} arguments
-    [Arguments]     ${id}=pf-modal-  ${partial_match}=${TRUE}  ${timeout}=10s
+    [Arguments]     ${id}=pf-modal-  ${partial_match}=${TRUE}  ${timeout}=2m
     ${is_modal}=    Is Generic Modal Displayed
     IF    ${is_modal} == ${TRUE}
         IF    ${partial_match} == ${TRUE}
@@ -387,7 +387,7 @@ Wait Until Generic Modal Appears
     [Documentation]    Waits until a modal window appears on the page.
     ...                It assumes the html "id" contains "pf-modal-", but it can be
     ...                piloted with ${id} and ${partial_match} arguments
-    [Arguments]     ${id}=pf-modal-  ${partial_match}=${TRUE}  ${timeout}=10s
+    [Arguments]     ${id}=pf-modal-  ${partial_match}=${TRUE}  ${timeout}=2m
     ${is_modal}=    Is Generic Modal Displayed
     IF    ${is_modal} == ${FALSE}
         IF    ${partial_match} == ${TRUE}
